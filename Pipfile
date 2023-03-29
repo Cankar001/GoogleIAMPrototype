@@ -1,0 +1,18 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+colorama = "*"
+google-api-python-client = "*"
+google-auth = "*"
+google-auth-httplib2 = "*"
+botocore = "*"
+boto3 = "*"
+google-cloud-resource-manager = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"
