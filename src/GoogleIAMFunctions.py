@@ -59,6 +59,48 @@ def list_service_accounts(project):
 
     return service_accounts
 
+def rename_service_account(email, new_display_name):
+    service = get_service()
+    resource = 'projects/-/serviceAccounts/' + email
+
+    service_account = service.projects().serviceAccounts().get(name=resource).execute()
+    old_display_name = service_account['displayName']
+    service_account['displayName'] = new_display_name
+    renamed_service_account = service.projects().serviceAccounts().update(name=resource, body=service_account).execute()
+
+    Logger.success(f'Updated display name from {old_display_name} to {new_display_name}')
+    return renamed_service_account
+
+
+def create_service_account_key(service_account_email):
+    service = get_service()
+    key = service.projects().serviceAccounts().keys().create(
+        name='projects/-/serviceAccounts/' + service_account_email,
+        body={}
+    ).execute()
+
+    if not key['disabled']:
+        Logger.success('Key successfully created in json format.')
+        return key
+
+    Logger.error(f'Could not create service account key for email {service_account_email}')
+    return None
+
+def list_service_account_keys(service_account_email):
+    service = get_service()
+    keys = service.projects().serviceAccounts().keys().list(name='projects/-/serviceAccounts/' + service_account_email).execute()
+
+    for key in keys['keys']:
+        key_name = key['name']
+        Logger.info(f'Key: {key_name}')
+
+    return keys
+
+def delete_service_account_key(key_name):
+    service = get_service()
+    service.projects().serviceAccounts().keys().delete(name=key_name).execute()
+    Logger.success(f'Successfully deleted key {key_name}')
+
 def disable_role(role_name, project):
     """ Disables existing role. """
     service = get_service()
