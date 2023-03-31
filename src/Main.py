@@ -14,8 +14,13 @@ if __name__ == '__main__':
     Logger.info('Starting demo...')
 
     parser = argparse.ArgumentParser(description='This is a prototype, to show the features of the IAM and the resource manager api of Google.')
-    parser.add_argument('-v', '--verbose', action='store_true', help='Enable verbose logging')
+    parser.add_argument('-l', '--verbose', action='store_true', help='Enable verbose logging')
+    parser.add_argument('-v', '--version', action='store_true', help='Show version')
     args = parser.parse_args()
+
+    if args.version:
+        Logger.success('Version 1.0.0')
+        quit(0)
 
     verbose_logging = args.verbose
     while True:
