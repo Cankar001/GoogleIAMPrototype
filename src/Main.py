@@ -26,7 +26,7 @@ def print_features():
     Logger.info('  project_get_iam_policy        | One of the connectors to the IAM api. Gets the current IAM policy')
     Logger.info('  create_folder                 | Creates a new folder inside another folder')
     Logger.info('  delete_folder                 | Deletes an existing folder')
-    Logger.info('  get_folder                    | Retrieves an folder by name and returns an instance of https://cloud.google.com/resource-manager/reference/rest/v3/folders#Folder')
+    Logger.info('  get_folder                    | Retrieves a folder by name and returns an instance of https://cloud.google.com/resource-manager/reference/rest/v3/folders#Folder')
     Logger.info('  move_folder                   | Moves an existing folder to a new location')
     Logger.info('  undelete_folder               | Reverts the deletion of an previous deleted folder')
     Logger.info('  list_folders                  | Returns a list of all folders, associated with the current project')
@@ -54,10 +54,7 @@ def print_features():
     Logger.info('  add_member_to_policy          | Adds a member to a policy')
 
 if __name__ == '__main__':
-    Logger.info('Starting demo...')
-
     parser = argparse.ArgumentParser(description='This is a prototype, to show the features of the IAM and the resource manager api of Google.')
-    parser.add_argument('-l', '--verbose', action='store_true', help='Enable verbose logging')
     parser.add_argument('-v', '--version', action='store_true', help='Show version')
     args = parser.parse_args()
 
@@ -65,7 +62,6 @@ if __name__ == '__main__':
         Logger.success('Version 1.0.0')
         quit(0)
 
-    verbose_logging = args.verbose
     last_result = None
     last_error = None
     show_help_menu = False
