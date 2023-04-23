@@ -101,6 +101,15 @@ def delete_service_account_key(key_name):
     service.projects().serviceAccounts().keys().delete(name=key_name).execute()
     Logger.success(f'Successfully deleted key {key_name}')
 
+def enable_role(role_name, stage, project):
+    """ Enables existing role. """
+    service = get_service()
+    role = service.projects().roles().patch(name='projects/' + project + '/roles/' + role_name, body={
+        'stage': stage
+    }).execute()
+    Logger.success(f'Successfully enabled role {role_name}')
+    return role
+
 def disable_role(role_name, project):
     """ Disables existing role. """
     service = get_service()

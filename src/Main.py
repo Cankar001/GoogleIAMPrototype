@@ -9,46 +9,49 @@ import GoogleResourceManagerFunctions
 import Logger
 
 def print_features():
-    Logger.info('         Command              |           Description')
-    Logger.info('quit || q                     | Exit this prototype and return to the command line')
+    Logger.info('         Command                |           Description')
+    Logger.info('quit || q || exit               | Exit this prototype and return to the command line')
+    Logger.info('help || h                       | Show this help menu')
+    Logger.info('clear                           | Clear the current screen')
     Logger.success('Google Resource Manager api functions:   ')
-    Logger.info('create_project                | Create a new Google cloud project')
-    Logger.info('delete_project                | Delete an existing Google cloud project')
-    Logger.info('get_project                   | Gets an existing project')
-    Logger.info('list_projects                 | Lists all existing projects, located in the provided folder or organization')
-    Logger.info('move_project                  | Move the project into a new folder or organization')
-    Logger.info('undelete_project              | Reverts the deletion of an previous deleted project')
-    Logger.info('update_project                | Updates the project internal name and retrieves the new generated name')
-    Logger.info('search_project                | Searches for an existing project, for more information about the query params see https://cloud.google.com/resource-manager/reference/rest/v3/projects/search#query-parameters')
-    Logger.info('project_set_iam_policy        | One of the connectors to the IAM api. Sets the current IAM policy')
-    Logger.info('project_get_iam_policy        | One of the connectors to the IAM api. Gets the current IAM policy')
-    Logger.info('create_folder                 | Creates a new folder inside another folder')
-    Logger.info('delete_folder                 | Deletes an existing folder')
-    Logger.info('get_folder                    | Retrieves an folder by name and returns an instance of https://cloud.google.com/resource-manager/reference/rest/v3/folders#Folder')
-    Logger.info('move_folder                   | Moves an existing folder to a new location')
-    Logger.info('undelete_folder               | Reverts the deletion of an previous deleted folder')
-    Logger.info('list_folders                  | Returns a list of all folders, associated with the current project')
-    Logger.info('get_organization              | Gets the organization object, by the specified name')
+    Logger.info('  create_project                | Create a new Google cloud project')
+    Logger.info('  delete_project                | Delete an existing Google cloud project')
+    Logger.info('  get_project                   | Gets an existing project')
+    Logger.info('  list_projects                 | Lists all existing projects, located in the provided folder or organization')
+    Logger.info('  move_project                  | Move the project into a new folder or organization')
+    Logger.info('  undelete_project              | Reverts the deletion of an previous deleted project')
+    Logger.info('  update_project                | Updates the project internal name and retrieves the new generated name')
+    Logger.info('  search_project                | Searches for an existing project, for more information about the query params see https://cloud.google.com/resource-manager/reference/rest/v3/projects/search#query-parameters')
+    Logger.info('  project_set_iam_policy        | One of the connectors to the IAM api. Sets the current IAM policy')
+    Logger.info('  project_get_iam_policy        | One of the connectors to the IAM api. Gets the current IAM policy')
+    Logger.info('  create_folder                 | Creates a new folder inside another folder')
+    Logger.info('  delete_folder                 | Deletes an existing folder')
+    Logger.info('  get_folder                    | Retrieves an folder by name and returns an instance of https://cloud.google.com/resource-manager/reference/rest/v3/folders#Folder')
+    Logger.info('  move_folder                   | Moves an existing folder to a new location')
+    Logger.info('  undelete_folder               | Reverts the deletion of an previous deleted folder')
+    Logger.info('  list_folders                  | Returns a list of all folders, associated with the current project')
+    Logger.info('  get_organization              | Gets the organization object, by the specified name')
     Logger.success('Google IAM api functions:  ')
-    Logger.info('create_service_account        | Create a new service account, attached to a project')
-    Logger.info('delete_service_account        | Delete an existing service account')
-    Logger.info('list_service_accounts         | Returns a list of all service accounts, associated with the current project')
-    Logger.info('activate_service_account      | Activates a service account')
-    Logger.info('deactivate_service_account    | Deactivates a service account')
-    Logger.info('rename_service_account        | Renames a service account')
-    Logger.info('create_service_account_key    | Creates a new key for a service account')
-    Logger.info('list_service_account_keys     | Lists all keys from a service account')
-    Logger.info('delete_service_account_key    | Deletes a specific key from a service account')
-    Logger.info('disable_role                  | Disables an existing role')
-    Logger.info('delete_role                   | Deletes an existing role')
-    Logger.info('create_role                   | Creates a new role')
-    Logger.info('edit_role                     | edits an existing role')
-    Logger.info('recover_role                  | Recovers a deleted role')
-    Logger.info('list_roles                    | Lists all roles')
-    Logger.info('get_role                      | Gets a specific role')
-    Logger.info('query_grantable_roles         | Queries all roles, that can be granted (returns a list of all standard google roles)')
-    Logger.info('set_policy                    | Sets the policy')
-    Logger.info('add_member_to_policy          | Adds a member to a policy')
+    Logger.info('  create_service_account        | Create a new service account, attached to a project')
+    Logger.info('  delete_service_account        | Delete an existing service account')
+    Logger.info('  list_service_accounts         | Returns a list of all service accounts, associated with the current project')
+    Logger.info('  activate_service_account      | Activates a service account')
+    Logger.info('  deactivate_service_account    | Deactivates a service account')
+    Logger.info('  rename_service_account        | Renames a service account')
+    Logger.info('  create_service_account_key    | Creates a new key for a service account')
+    Logger.info('  list_service_account_keys     | Lists all keys from a service account')
+    Logger.info('  delete_service_account_key    | Deletes a specific key from a service account')
+    Logger.info('  enable_role                   | Enables a disabled role')
+    Logger.info('  disable_role                  | Disables an existing role')
+    Logger.info('  delete_role                   | Deletes an existing role')
+    Logger.info('  create_role                   | Creates a new role')
+    Logger.info('  edit_role                     | edits an existing role')
+    Logger.info('  recover_role                  | Recovers a deleted role')
+    Logger.info('  list_roles                    | Lists all roles')
+    Logger.info('  get_role                      | Gets a specific role')
+    Logger.info('  query_grantable_roles         | Queries all roles, that can be granted (returns a list of all standard google roles)')
+    Logger.info('  set_policy                    | Sets the policy')
+    Logger.info('  add_member_to_policy          | Adds a member to a policy')
 
 if __name__ == '__main__':
     Logger.info('Starting demo...')
@@ -65,14 +68,23 @@ if __name__ == '__main__':
     verbose_logging = args.verbose
     last_result = None
     last_error = None
+    show_help_menu = False
+    should_clear_screen = False
 
     # This function looks into the environment variable GOOGLE_APPLICATION_CREDENTIALS 
     # and retrieves all necessary information from the json key file
     credentials, project = google.auth.default()
 
     while True:
-        os.system('clear')
-        print_features()
+        if should_clear_screen:
+            os.system('clear')
+            should_clear_screen = False
+
+        Logger.success(f'Currently selected project: {project}')
+
+        if show_help_menu:
+            show_help_menu = False
+            print_features()
 
         if last_error is not None:
             Logger.error(f'An error occurred in your last input: {last_error}')
@@ -92,8 +104,12 @@ if __name__ == '__main__':
         except KeyboardInterrupt:
             break
 
-        if cmd == 'quit' or cmd == 'q':
+        if cmd == 'quit' or cmd == 'q' or cmd == 'exit':
             break
+        elif cmd == 'help' or cmd == 'h':
+            show_help_menu = True
+        elif cmd == 'clear':
+            should_clear_screen = True
         elif cmd == 'create_project':
             Logger.info('Creating google project...')
             last_result = GoogleResourceManagerFunctions.create_project()
@@ -333,6 +349,16 @@ if __name__ == '__main__':
                 continue
 
             last_result = GoogleIAMFunctions.delete_service_account_key(key_name=key)
+        elif cmd == 'enable_role':
+            Logger.info('Enabling a role, please provide additional information...')
+
+            try:
+                role = input('The role name to be enabled > ')
+                stage = input('The new stage tot set the role to (either GA, ALPHA or BETA) > ')
+            except KeyboardInterrupt:
+                continue
+
+            last_result = GoogleIAMFunctions.enable_role(role_name=role, stage=stage, project=project)
         elif cmd == 'disable_role':
             Logger.info('Disabling a role, please provide additional information...')
 
@@ -358,7 +384,7 @@ if __name__ == '__main__':
                 role = input('The role name > ')
                 title = input('The role display title > ')
                 description = input('The role description > ')
-                stage = input('The role stage (Either GA or BETA) > ')
+                stage = input('The role stage (Either GA, ALPHA or BETA) > ')
 
                 permissions = []
                 while True:
@@ -385,7 +411,7 @@ if __name__ == '__main__':
                 role = input('The role name > ')
                 title = input('The role display title > ')
                 description = input('The role description > ')
-                stage = input('The role stage (Either GA or BETA)  > ')
+                stage = input('The role stage (Either GA, ALPHA or BETA)  > ')
 
                 permissions = []
                 while True:
