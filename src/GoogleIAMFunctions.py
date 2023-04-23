@@ -7,7 +7,7 @@ import Logger
 
 def get_service():
     """ Internal getter to simplify API usage """
-    credentials = service_account.Credentials.from_service_account_file(filename=os.environ['GOOGLE_CLOUD_CREDENTIALS'], scopes=['https://www.googleapis.com/auth/cloud-platform'])
+    credentials = service_account.Credentials.from_service_account_file(filename=os.environ['GOOGLE_APPLICATION_CREDENTIALS'], scopes=['https://www.googleapis.com/auth/cloud-platform'])
     return googleapiclient.discovery.build('iam', 'v1', credentials=credentials)
 
 def activate_service_account(email):
