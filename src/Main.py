@@ -120,20 +120,14 @@ if __name__ == '__main__':
             last_result = GoogleResourceManagerFunctions.delete_project(project_name=project_name)
         elif cmd == 'get_project':
             Logger.info('Getting an existing project, please provide additional information...')
-
-            try:
-                project_name = input('The name of the project to be retrieved...')
-            except KeyboardInterrupt:
-                continue
-
-            last_result = GoogleResourceManagerFunctions.get_project(project_name=project_name)
+            last_result = GoogleResourceManagerFunctions.get_project(project_name=project)
         elif cmd == 'list_projects':
             Logger.info('Listing all projects, please provide additional information...')
 
             try:
                 resource_name = input('The folder, from which the projects should be listed (leave empty to list all projects by organization) > ')
                 is_folder = True
-                if len(folder_name) == 0:
+                if len(resource_name) == 0:
                     resource_name = input('The organization, from which the projects should be listed > ')
                     is_folder = False
             except KeyboardInterrupt:
@@ -147,7 +141,7 @@ if __name__ == '__main__':
                 project_name = input('The project name, which should be moved > ')
                 resource_name = input('The destination folder, into which the project should be moved (leave empty to move the project into another organization) > ')
                 is_folder = True
-                if len(folder_name) == 0:
+                if len(resource_name) == 0:
                     resource_name = input('The organization, into which the project should be moved > ')
                     is_folder = False
             except KeyboardInterrupt:
