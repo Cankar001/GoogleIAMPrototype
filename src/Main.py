@@ -108,7 +108,11 @@ if __name__ == '__main__':
             should_clear_screen = True
         elif cmd == 'create_project':
             Logger.info('Creating google project...')
-            last_result = GoogleResourceManagerFunctions.create_project()
+            
+            try:
+                last_result = GoogleResourceManagerFunctions.create_project()
+            except Exception:
+                last_error = 'Function GoogleResourceManagerFunctions.create_project failed.'
         elif cmd == 'delete_project':
             Logger.info('Deleting google project, please provide additional information...')
 
@@ -117,10 +121,17 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleResourceManagerFunctions.delete_project(project_name=project_name)
+            try:
+                last_result = GoogleResourceManagerFunctions.delete_project(project_name=project_name)
+            except Exception:
+                last_error = 'Function GoogleResourceManagerFunctions.delete_project failed.'
         elif cmd == 'get_project':
             Logger.info('Getting an existing project, please provide additional information...')
-            last_result = GoogleResourceManagerFunctions.get_project(project_name=project)
+
+            try:
+                last_result = GoogleResourceManagerFunctions.get_project(project_name=project)
+            except Exception:
+                last_error = 'Function GoogleResourceManagerFunctions.get_project failed.'
         elif cmd == 'list_projects':
             Logger.info('Listing all projects, please provide additional information...')
 
@@ -133,7 +144,10 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleResourceManagerFunctions.list_projects(parent_resource=resource_name, is_folder=is_folder)
+            try:
+                last_result = GoogleResourceManagerFunctions.list_projects(parent_resource=resource_name, is_folder=is_folder)
+            except Exception:
+                last_error = 'Function GoogleResourceManagerFunctions.list_projects failed.'
         elif cmd == 'move_project':
             Logger.info('Moving project, please provide additional information...')
 
@@ -147,11 +161,14 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleResourceManagerFunctions.move_project(
-                project_name=project_name, 
-                dest_resource=resource_name, 
-                is_folder=is_folder
-            )
+            try:
+                last_result = GoogleResourceManagerFunctions.move_project(
+                    project_name=project_name, 
+                    dest_resource=resource_name, 
+                    is_folder=is_folder
+                )
+            except Exception:
+                last_error = 'Function GoogleResourceManagerFunctions.move_project failed.'
         elif cmd == 'search_projects':
             Logger.info('Searching for project, please provide additional information...')
 
@@ -160,7 +177,10 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleResourceManagerFunctions.search_projects(query=query)
+            try:
+                last_result = GoogleResourceManagerFunctions.search_projects(query=query)
+            except Exception:
+                last_error = 'Function GoogleResourceManagerFunctions.search_projects failed.'
         elif cmd == 'project_set_iam_policy':
             Logger.info('Setting the IAM policy, please provide additional information...')
 
@@ -169,7 +189,10 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleResourceManagerFunctions.project_set_iam_policy(resource_name=resource_name)
+            try:
+                last_result = GoogleResourceManagerFunctions.project_set_iam_policy(resource_name=resource_name)
+            except Exception:
+                last_error = 'Function GoogleResourceManagerFunctions.project_set_iam_policy failed.'
         elif cmd == 'project_get_iam_policy':
             Logger.info('Getting the IAM policy, please provide additional information...')
 
@@ -178,7 +201,10 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleResourceManagerFunctions.project_get_iam_policy(resource_name=resource_name)
+            try:
+                last_result = GoogleResourceManagerFunctions.project_get_iam_policy(resource_name=resource_name)
+            except Exception:
+                last_error = 'Function GoogleResourceManagerFunctions.project_get_iam_policy failed.'
         elif cmd == 'undelete_project':
             Logger.info('Undeleting project, please provide additional information...')
             
@@ -187,10 +213,16 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleResourceManagerFunctions.undelete_project(project_name=project_name)
+            try:
+                last_result = GoogleResourceManagerFunctions.undelete_project(project_name=project_name)
+            except Exception:
+                last_error = 'Function GoogleResourceManagerFunctions.undelete_project failed.'
         elif cmd == 'update_project':
             Logger.info('Updating project...')
-            last_result = GoogleResourceManagerFunctions.update_project()
+            try:
+                last_result = GoogleResourceManagerFunctions.update_project()
+            except Exception:
+                last_error = 'Function GoogleResourceManagerFunctions.update_project failed.'
         elif cmd == 'create_service_account':
             Logger.info('Creating service account, please provide additional information...')
 
@@ -200,7 +232,10 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleIAMFunctions.create_service_account(name, display_name, project)
+            try:
+                last_result = GoogleIAMFunctions.create_service_account(name, display_name, project)
+            except Exception:
+                last_error = 'Function GoogleIAMFunctions.create_service_account failed.'
         elif cmd == 'delete_service_account':
             Logger.info('Deleting google service account, please provide additional information...')
 
@@ -209,8 +244,11 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleIAMFunctions.delete_service_account(email)
-            Logger.success('Service account deleted successfully')
+            try:
+                last_result = GoogleIAMFunctions.delete_service_account(email)
+                Logger.success('Service account deleted successfully')
+            except Exception:
+                last_error = 'Function GoogleIAMFunctions.delete_service_account failed.'
         elif cmd == 'create_folder':
             Logger.info('Creating a new folder, please provide additional information...')
 
@@ -220,7 +258,10 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleResourceManagerFunctions.create_folder(display_name=display_name, parent_name=parent_name)
+            try:
+                last_result = GoogleResourceManagerFunctions.create_folder(display_name=display_name, parent_name=parent_name)
+            except Exception:
+                last_error = 'Function GoogleResourceManagerFunctions.create_folder failed.'
         elif cmd == 'delete_folder':
             Logger.info('Deleting existing folder, please provide additional information...')
 
@@ -229,7 +270,10 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleResourceManagerFunctions.delete_folder(folder_name=folder_name)
+            try:
+                last_result = GoogleResourceManagerFunctions.delete_folder(folder_name=folder_name)
+            except Exception:
+                last_error = 'Function GoogleResourceManagerFunctions.delete_folder failed.'
         elif cmd == 'get_folder':
             Logger.info('Retrieving existing folder, please provide additional information...')
 
@@ -238,7 +282,10 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleResourceManagerFunctions.get_folder(folder_name=folder_name)
+            try:
+                last_result = GoogleResourceManagerFunctions.get_folder(folder_name=folder_name)
+            except Exception:
+                last_error = 'Function GoogleResourceManagerFunctions.get_folder failed.'
         elif cmd == 'move_folder':
             Logger.info('Moving existing folder, please provide additional information...')
 
@@ -248,7 +295,10 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleResourceManagerFunctions.move_folder(folder_name=folder_name, destination_path=destination)
+            try:
+                last_result = GoogleResourceManagerFunctions.move_folder(folder_name=folder_name, destination_path=destination)
+            except Exception:
+                last_error = 'Function GoogleResourceManagerFunctions.move_folder failed.'
         elif cmd == 'undelete_folder':
             Logger.info('Undeleting folder, please provide additional information...')
 
@@ -257,7 +307,10 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleResourceManagerFunctions.undelete_folder(folder_name=folder_name)
+            try:
+                last_result = GoogleResourceManagerFunctions.undelete_folder(folder_name=folder_name)
+            except Exception:
+                last_error = 'Function GoogleResourceManagerFunctions.undelete_folder failed.'
         elif cmd == 'list_folders':
             Logger.info('Listing all google folders...')
 
@@ -271,10 +324,16 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleResourceManagerFunctions.list_folders(parent_resource=resource_name, is_folder=is_folder)
+            try:
+                last_result = GoogleResourceManagerFunctions.list_folders(parent_resource=resource_name, is_folder=is_folder)
+            except Exception:
+                last_error = 'Function GoogleResourceManagerFunctions.list_folders failed.'
         elif cmd == 'list_service_accounts':
             Logger.info('Listing all service accounts...')
-            last_result = GoogleIAMFunctions.list_service_accounts(project=project)
+            try:
+                last_result = GoogleIAMFunctions.list_service_accounts(project=project)
+            except Exception:
+                last_error = 'Function GoogleIAMFunctions.list_service_accounts failed.'
         elif cmd == 'get_organization':
             Logger.info('Showing all organization properties of current project...')
 
@@ -283,7 +342,10 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
             
-            last_result = GoogleResourceManagerFunctions.get_organization(name=name)
+            try:
+                last_result = GoogleResourceManagerFunctions.get_organization(name=name)
+            except Exception:
+                last_error = 'Function GoogleResourceManagerFunctions.get_organization failed.'
         elif cmd == 'activate_service_account':
             Logger.info('Activating a service account, please provide additional information...')
 
@@ -292,7 +354,10 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleIAMFunctions.activate_service_account(email=email)
+            try:
+                last_result = GoogleIAMFunctions.activate_service_account(email=email)
+            except Exception:
+                last_error = 'Function GoogleIAMFunctions.activate_service_account failed.'
         elif cmd == 'deactivate_service_account':
             Logger.info('Deactivating a service account, please provide additional information...')
 
@@ -301,7 +366,10 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleIAMFunctions.deactivate_service_account(email=email)
+            try:
+                last_result = GoogleIAMFunctions.deactivate_service_account(email=email)
+            except Exception:
+                last_error = 'Function GoogleIAMFunctions.deactivate_service_account failed.'
         elif cmd == 'rename_service_account':
             Logger.info('Renaming a service account, please provide additional information...')
 
@@ -311,7 +379,10 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleIAMFunctions.rename_service_account(email=email, new_display_name=new_display_name)
+            try:
+                last_result = GoogleIAMFunctions.rename_service_account(email=email, new_display_name=new_display_name)
+            except Exception:
+                last_error = 'Function GoogleIAMFunctions.rename_service_account failed.'
         elif cmd == 'create_service_account_key':
             Logger.info('Creating a new service account key, please provide additional information...')
 
@@ -320,7 +391,10 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleIAMFunctions.create_service_account_key(service_account_email=email)
+            try:
+                last_result = GoogleIAMFunctions.create_service_account_key(service_account_email=email)
+            except Exception:
+                last_error = 'Function GoogleIAMFunctions.create_service_account_key failed.'
         elif cmd == 'list_service_account_keys':
             Logger.info('Listing all service account keys, please provide additional information...')
 
@@ -329,7 +403,10 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleIAMFunctions.list_service_account_keys(service_account_email=email)
+            try:
+                last_result = GoogleIAMFunctions.list_service_account_keys(service_account_email=email)
+            except Exception:
+                last_error = 'Function GoogleIAMFunctions.list_service_account_keys failed.'
         elif cmd == 'delete_service_account_key':
             Logger.info('Deleting a specific service account key, please provide additional information...')
 
@@ -338,7 +415,10 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleIAMFunctions.delete_service_account_key(key_name=key)
+            try:
+                last_result = GoogleIAMFunctions.delete_service_account_key(key_name=key)
+            except Exception:
+                last_error = 'Function GoogleIAMFunctions.delete_service_account_key failed.'
         elif cmd == 'enable_role':
             Logger.info('Enabling a role, please provide additional information...')
 
@@ -348,7 +428,10 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleIAMFunctions.enable_role(role_name=role, stage=stage, project=project)
+            try:
+                last_result = GoogleIAMFunctions.enable_role(role_name=role, stage=stage, project=project)
+            except Exception:
+                last_error = 'Function GoogleIAMFunctions.enable_role failed.'
         elif cmd == 'disable_role':
             Logger.info('Disabling a role, please provide additional information...')
 
@@ -357,7 +440,10 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleIAMFunctions.disable_role(role_name=role, project=project)
+            try:
+                last_result = GoogleIAMFunctions.disable_role(role_name=role, project=project)
+            except Exception:
+                last_error = 'Function GoogleIAMFunctions.disable_role failed.'
         elif cmd == 'delete_role':
             Logger.info('Deleting a role, please provide additional information...')
 
@@ -366,7 +452,10 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleIAMFunctions.delete_role(role_name=role, project=project)
+            try:
+                last_result = GoogleIAMFunctions.delete_role(role_name=role, project=project)
+            except Exception:
+                last_error = 'Function GoogleIAMFunctions.delete_role failed.'
         elif cmd == 'create_role':
             Logger.info('Creating a role, please provide additional information...')
 
@@ -386,14 +475,17 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleIAMFunctions.create_role(
-                role_name=role,
-                project=project,
-                title=title,
-                description=description, 
-                permissions=permissions, 
-                stage=stage
-            )
+            try:
+                last_result = GoogleIAMFunctions.create_role(
+                    role_name=role,
+                    project=project,
+                    title=title,
+                    description=description, 
+                    permissions=permissions, 
+                    stage=stage
+                )
+            except Exception:
+                last_error = 'Function GoogleIAMFunctions.create_role failed.'
         elif cmd == 'edit_role':
             Logger.info('Editing a role, please provide additional information...')
             
@@ -413,14 +505,17 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleIAMFunctions.edit_role(
-                role_name=role, 
-                project=project, 
-                title=title, 
-                description=description, 
-                permissions=permissions, 
-                stage=stage
-            )
+            try:
+                last_result = GoogleIAMFunctions.edit_role(
+                    role_name=role, 
+                    project=project, 
+                    title=title, 
+                    description=description, 
+                    permissions=permissions, 
+                    stage=stage
+                )
+            except Exception:
+                last_error = 'Function GoogleIAMFunctions.edit_role failed.'
         elif cmd == 'recover_role':
             Logger.info('Recovering a role, please provide additional information...')
 
@@ -429,7 +524,10 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
         
-            last_result = GoogleIAMFunctions.recover_role(role_name=role, project=project)
+            try:
+                last_result = GoogleIAMFunctions.recover_role(role_name=role, project=project)
+            except Exception:
+                last_error = 'Function GoogleIAMFunctions.recover_role failed.'
         elif cmd == 'list_roles':
             Logger.info('Listing all roles...')
             last_result = GoogleIAMFunctions.list_roles(project=project)
@@ -441,7 +539,10 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleIAMFunctions.get_role(role_name=role)
+            try:
+                last_result = GoogleIAMFunctions.get_role(role_name=role)
+            except Exception:
+                last_error = 'Function GoogleIAMFunctions.get_role failed.'
         elif cmd == 'query_grantable_roles':
             Logger.info('Retrieving all grantable roles, please provide additional information...')
 
@@ -450,7 +551,10 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleIAMFunctions.query_grantable_roles(name=name)
+            try:
+                last_result = GoogleIAMFunctions.query_grantable_roles(name=name)
+            except Exception:
+                last_error = 'Function GoogleIAMFunctions.query_grantable_roles failed.'
         elif cmd == 'set_policy':
             Logger.info('Setting the IAM policy, please provide additional information...')
 
@@ -460,7 +564,11 @@ if __name__ == '__main__':
                 continue
 
             policy = GoogleResourceManagerFunctions.project_get_iam_policy(resource_name=name)
-            last_result = GoogleIAMFunctions.set_policy(project=project, policy=policy)
+
+            try:
+                last_result = GoogleIAMFunctions.set_policy(project=project, policy=policy)
+            except Exception:
+                last_error = 'Function GoogleIAMFunctions.set_policy failed.'
 
         elif cmd == 'add_member_to_policy':
             Logger.info('Adding a member to the IAM policy, please provide additional information...')
@@ -472,6 +580,9 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 continue
 
-            last_result = GoogleIAMFunctions.add_member_to_policy(policy=policy, role=role, member=member)
+            try:
+                last_result = GoogleIAMFunctions.add_member_to_policy(policy=policy, role=role, member=member)
+            except Exception:
+                last_error = 'Function GoogleIAMFunctions.add_member_to_policy failed.'
         else:
             last_error = 'Unknown command'
