@@ -7,12 +7,13 @@ import google.auth
 import GoogleIAMFunctions
 import GoogleResourceManagerFunctions
 import Logger
+import Utils
 
 def print_features():
     Logger.info('         Command                |           Description')
-    Logger.info('quit || q || exit               | Exit this prototype and return to the command line')
-    Logger.info('help || h                       | Show this help menu')
-    Logger.info('clear                           | Clear the current screen')
+    Logger.info('  quit || q || exit             | Exit this prototype and return to the command line')
+    Logger.info('  help || h                     | Show this help menu')
+    Logger.info('  clear                         | Clear the current screen')
     Logger.success('Google Resource Manager api functions:   ')
     Logger.info('  create_project                | Create a new Google cloud project')
     Logger.info('  delete_project                | Delete an existing Google cloud project')
@@ -67,16 +68,21 @@ if __name__ == '__main__':
     show_help_menu = False
     should_clear_screen = False
 
-    # This function looks into the environment variable GOOGLE_APPLICATION_CREDENTIALS 
-    # and retrieves all necessary information from the json key file
-    credentials, project = google.auth.default()
+    try:
+        # This function looks into the environment variable GOOGLE_APPLICATION_CREDENTIALS 
+        # and retrieves all necessary information from the json key file
+        credentials, project = google.auth.default()
+    except Exception:
+        Logger.error(f'You are trying to execute the script from this location: {os.getcwd()}')
+        Logger.error('This path does not seem to contain the json file or your environment config is wrong or does not exist at this path.')
+        quit(1)
+
+    Logger.success(f'Currently selected project: {project}')
 
     while True:
         if should_clear_screen:
             os.system('clear')
             should_clear_screen = False
-
-        Logger.success(f'Currently selected project: {project}')
 
         if show_help_menu:
             show_help_menu = False
@@ -94,12 +100,11 @@ if __name__ == '__main__':
                 Logger.success(last_result)
             last_result = None
 
-        try:
-            cmd = input('Command  > ')
-            cmd = cmd.lower()
-        except KeyboardInterrupt:
+        cmd_success, cmd = Utils.acquire_input('Command  > ')
+        if not cmd_success:
             break
 
+        cmd = cmd.lower()
         if cmd == 'quit' or cmd == 'q' or cmd == 'exit':
             break
         elif cmd == 'help' or cmd == 'h':
@@ -116,9 +121,8 @@ if __name__ == '__main__':
         elif cmd == 'delete_project':
             Logger.info('Deleting google project, please provide additional information...')
 
-            try:
-                project_name = input('The name of the project to be deleted...')
-            except KeyboardInterrupt:
+            project_name_success, project_name = Utils.acquire_input('The name of the project to be deleted...')
+            if not project_name_success:
                 continue
 
             try:
@@ -128,21 +132,27 @@ if __name__ == '__main__':
         elif cmd == 'get_project':
             Logger.info('Getting an existing project, please provide additional information...')
 
+            project_name_success, project_name = Utils.acquire_input('The name of the project to be fetched...')
+            if not project_name_success:
+                continue
+
             try:
-                last_result = GoogleResourceManagerFunctions.get_project(project_name=project)
+                last_result = GoogleResourceManagerFunctions.get_project(project_name=project_name)
             except Exception:
                 last_error = 'Function GoogleResourceManagerFunctions.get_project failed.'
         elif cmd == 'list_projects':
             Logger.info('Listing all projects, please provide additional information...')
 
-            try:
-                resource_name = input('The folder, from which the projects should be listed (leave empty to list all projects by organization) > ')
-                is_folder = True
-                if len(resource_name) == 0:
-                    resource_name = input('The organization, from which the projects should be listed > ')
-                    is_folder = False
-            except KeyboardInterrupt:
+            resource_success, resource_name = Utils.acquire_input('The folder, from which the projects should be listed (leave empty to list all projects by organization) > ')
+            if not resource_success:
                 continue
+
+            is_folder = True
+            if len(resource_name) == 0:
+                resource_name_success, resource_name = Utils.acquire_input('The organization, from which the projects should be listed > ')
+                if not resource_name_success:
+                    continue
+                is_folder = False
 
             try:
                 last_result = GoogleResourceManagerFunctions.list_projects(parent_resource=resource_name, is_folder=is_folder)
@@ -151,15 +161,17 @@ if __name__ == '__main__':
         elif cmd == 'move_project':
             Logger.info('Moving project, please provide additional information...')
 
-            try:
-                project_name = input('The project name, which should be moved > ')
-                resource_name = input('The destination folder, into which the project should be moved (leave empty to move the project into another organization) > ')
-                is_folder = True
-                if len(resource_name) == 0:
-                    resource_name = input('The organization, into which the project should be moved > ')
-                    is_folder = False
-            except KeyboardInterrupt:
+            project_success, project_name = Utils.acquire_input('The project name, which should be moved > ')
+            resource_success, resource_name = Utils.acquire_input('The destination folder, into which the project should be moved (leave empty to move the project into another organization) > ')
+            if not project_success or not resource_success:
                 continue
+
+            is_folder = True
+            if len(resource_name) == 0:
+                resource_name_success, resource_name = Utils.acquire_input('The organization, into which the project should be moved > ')
+                if not resource_name_success:
+                    continue
+                is_folder = False
 
             try:
                 last_result = GoogleResourceManagerFunctions.move_project(
@@ -172,9 +184,8 @@ if __name__ == '__main__':
         elif cmd == 'search_projects':
             Logger.info('Searching for project, please provide additional information...')
 
-            try:
-                query = input('The query, which should be used for the search > ')
-            except KeyboardInterrupt:
+            query_success, query = Utils.acquire_input('The query, which should be used for the search > ')
+            if not query_success:
                 continue
 
             try:
@@ -184,9 +195,8 @@ if __name__ == '__main__':
         elif cmd == 'project_set_iam_policy':
             Logger.info('Setting the IAM policy, please provide additional information...')
 
-            try:
-                resource_name = input('The resource name > ')
-            except KeyboardInterrupt:
+            resource_name_success, resource_name = Utils.acquire_input('The resource name > ')
+            if not resource_name_success:
                 continue
 
             try:
@@ -196,9 +206,8 @@ if __name__ == '__main__':
         elif cmd == 'project_get_iam_policy':
             Logger.info('Getting the IAM policy, please provide additional information...')
 
-            try:
-                resource_name = input('The resource name > ')
-            except KeyboardInterrupt:
+            resource_name_success, resource_name = Utils.acquire_input('The resource name > ')
+            if not resource_name_success:
                 continue
 
             try:
@@ -207,10 +216,9 @@ if __name__ == '__main__':
                 last_error = 'Function GoogleResourceManagerFunctions.project_get_iam_policy failed.'
         elif cmd == 'undelete_project':
             Logger.info('Undeleting project, please provide additional information...')
-            
-            try:
-                project_name = input('The project name, which deletion should be cancelled > ')
-            except KeyboardInterrupt:
+
+            project_name_success, project_name = Utils.acquire_input('The project name, which deletion should be cancelled > ')
+            if not project_name_success:
                 continue
 
             try:
@@ -219,6 +227,7 @@ if __name__ == '__main__':
                 last_error = 'Function GoogleResourceManagerFunctions.undelete_project failed.'
         elif cmd == 'update_project':
             Logger.info('Updating project...')
+
             try:
                 last_result = GoogleResourceManagerFunctions.update_project()
             except Exception:
@@ -226,10 +235,9 @@ if __name__ == '__main__':
         elif cmd == 'create_service_account':
             Logger.info('Creating service account, please provide additional information...')
 
-            try:
-                display_name = input('The display name of the new service account > ')
-                name = input('The name of the new service account > ')
-            except KeyboardInterrupt:
+            display_name_success, display_name = Utils.acquire_input('The display name of the new service account > ')
+            name_success, name = Utils.acquire_input('The name of the new service account > ')
+            if not display_name_success or not name_success:
                 continue
 
             try:
@@ -239,9 +247,8 @@ if __name__ == '__main__':
         elif cmd == 'delete_service_account':
             Logger.info('Deleting google service account, please provide additional information...')
 
-            try:
-                email = input('Email of service account to delete  > ')
-            except KeyboardInterrupt:
+            email_success, email = Utils.acquire_input('Email of service account to delete  > ')
+            if not email_success:
                 continue
 
             try:
@@ -252,10 +259,9 @@ if __name__ == '__main__':
         elif cmd == 'create_folder':
             Logger.info('Creating a new folder, please provide additional information...')
 
-            try:
-                folder_name = input('The name of the new folder > ')
-                parent_name = input('The name of the parent folder > ')
-            except KeyboardInterrupt:
+            folder_name_success, folder_name = Utils.acquire_input('The name of the new folder > ')
+            parent_name_success, parent_name = Utils.acquire_input('The name of the parent folder > ')
+            if not folder_name_success or not parent_name_success:
                 continue
 
             try:
@@ -265,9 +271,8 @@ if __name__ == '__main__':
         elif cmd == 'delete_folder':
             Logger.info('Deleting existing folder, please provide additional information...')
 
-            try:
-                folder_name = input('The name of the folder, which should be deleted > ')
-            except KeyboardInterrupt:
+            folder_name_success, folder_name = Utils.acquire_input('The name of the folder, which should be deleted > ')
+            if not folder_name_success:
                 continue
 
             try:
@@ -277,9 +282,8 @@ if __name__ == '__main__':
         elif cmd == 'get_folder':
             Logger.info('Retrieving existing folder, please provide additional information...')
 
-            try:
-                folder_name = input('The name of the existing folder > ')
-            except KeyboardInterrupt:
+            folder_name_success, folder_name = Utils.acquire_input('The name of the folder, which should be deleted > ')
+            if not folder_name_success:
                 continue
 
             try:
@@ -289,10 +293,9 @@ if __name__ == '__main__':
         elif cmd == 'move_folder':
             Logger.info('Moving existing folder, please provide additional information...')
 
-            try:
-                folder_name = input('The name of the existing folder > ')
-                destination = input('The name of the destination folder, to move the folder to > ')
-            except KeyboardInterrupt:
+            folder_name_success, folder_name = Utils.acquire_input('The name of the existing folder > ')
+            destination_success, destination = Utils.acquire_input('The name of the destination folder, to move the folder to > ')
+            if not folder_name_success or not destination_success:
                 continue
 
             try:
@@ -302,9 +305,8 @@ if __name__ == '__main__':
         elif cmd == 'undelete_folder':
             Logger.info('Undeleting folder, please provide additional information...')
 
-            try:
-                folder_name = input('The name of the folder to undelete > ')
-            except KeyboardInterrupt:
+            folder_name_success, folder_name = Utils.acquire_input('The name of the folder to undelete > ')
+            if not folder_name_success:
                 continue
 
             try:
@@ -314,15 +316,16 @@ if __name__ == '__main__':
         elif cmd == 'list_folders':
             Logger.info('Listing all google folders...')
 
-            try:
-                resource_name = input('The parent folder to show the contents from (leave empty to show the folders of an organization) > ')
-                is_folder = True
-                if len(resource_name) == 0:
-                    is_folder = False
-                    resource_name = input('The organization to show the contents from > ')
-
-            except KeyboardInterrupt:
+            resource_success, resource_name = Utils.acquire_input('The parent folder to show the contents from (leave empty to show the folders of an organization) > ')
+            if not resource_success:
                 continue
+
+            is_folder = True
+            if len(resource_name) == 0:
+                resource_name_success, resource_name = Utils.acquire_input('The organization to show the contents from > ')
+                if not resource_name_success:
+                    continue
+                is_folder = False
 
             try:
                 last_result = GoogleResourceManagerFunctions.list_folders(parent_resource=resource_name, is_folder=is_folder)
@@ -337,11 +340,10 @@ if __name__ == '__main__':
         elif cmd == 'get_organization':
             Logger.info('Showing all organization properties of current project...')
 
-            try:
-                name = input('The name of the organization > ')
-            except KeyboardInterrupt:
+            name_success, name = Utils.acquire_input('The name of the organization > ')
+            if not name_success:
                 continue
-            
+
             try:
                 last_result = GoogleResourceManagerFunctions.get_organization(name=name)
             except Exception:
@@ -349,9 +351,8 @@ if __name__ == '__main__':
         elif cmd == 'activate_service_account':
             Logger.info('Activating a service account, please provide additional information...')
 
-            try:
-                email = input('The email of the service account > ')
-            except KeyboardInterrupt:
+            email_success, email = Utils.acquire_input('The email of the service account > ')
+            if not email_success:
                 continue
 
             try:
@@ -361,9 +362,8 @@ if __name__ == '__main__':
         elif cmd == 'deactivate_service_account':
             Logger.info('Deactivating a service account, please provide additional information...')
 
-            try:
-                email = input('The email of the service account > ')
-            except KeyboardInterrupt:
+            email_success, email = Utils.acquire_input('The email of the service account > ')
+            if not email_success:
                 continue
 
             try:
@@ -373,10 +373,9 @@ if __name__ == '__main__':
         elif cmd == 'rename_service_account':
             Logger.info('Renaming a service account, please provide additional information...')
 
-            try:
-                email = input('The email of the service account > ')
-                new_display_name = input('The new display name the service account should be renamed to > ')
-            except KeyboardInterrupt:
+            email_success, email = Utils.acquire_input('The email of the service account > ')
+            new_display_name_success, new_display_name = Utils.acquire_input('The new display name the service account should be renamed to > ')
+            if not email_success or not new_display_name_success:
                 continue
 
             try:
@@ -386,9 +385,8 @@ if __name__ == '__main__':
         elif cmd == 'create_service_account_key':
             Logger.info('Creating a new service account key, please provide additional information...')
 
-            try:
-                email = input('The email of the service account > ')
-            except KeyboardInterrupt:
+            email_success, email = Utils.acquire_input('The email of the service account > ')
+            if not email_success:
                 continue
 
             try:
@@ -398,9 +396,8 @@ if __name__ == '__main__':
         elif cmd == 'list_service_account_keys':
             Logger.info('Listing all service account keys, please provide additional information...')
 
-            try:
-                email = input('The email of the service account > ')
-            except KeyboardInterrupt:
+            email_success, email = Utils.acquire_input('The email of the service account > ')
+            if not email_success:
                 continue
 
             try:
@@ -410,9 +407,8 @@ if __name__ == '__main__':
         elif cmd == 'delete_service_account_key':
             Logger.info('Deleting a specific service account key, please provide additional information...')
 
-            try:
-                key = input('The service account key to be deleted > ')
-            except KeyboardInterrupt:
+            key_success, key = Utils.acquire_input('The service account key to be deleted > ')
+            if not key_success:
                 continue
 
             try:
@@ -422,10 +418,9 @@ if __name__ == '__main__':
         elif cmd == 'enable_role':
             Logger.info('Enabling a role, please provide additional information...')
 
-            try:
-                role = input('The role name to be enabled > ')
-                stage = input('The new stage tot set the role to (either GA, ALPHA or BETA) > ')
-            except KeyboardInterrupt:
+            role_success, role = Utils.acquire_input('The role name to be enabled > ')
+            stage_success, stage = Utils.acquire_input('The new stage to set the role to (either GA, ALPHA or BETA) > ')
+            if not role_success or not stage_success:
                 continue
 
             try:
@@ -435,9 +430,8 @@ if __name__ == '__main__':
         elif cmd == 'disable_role':
             Logger.info('Disabling a role, please provide additional information...')
 
-            try:
-                role = input('The role name to be disabled > ')
-            except KeyboardInterrupt:
+            role_success, role = Utils.acquire_input('The role name to be disabled > ')
+            if not role_success:
                 continue
 
             try:
@@ -447,9 +441,8 @@ if __name__ == '__main__':
         elif cmd == 'delete_role':
             Logger.info('Deleting a role, please provide additional information...')
 
-            try:
-                role = input('The role name to be deleted > ')
-            except KeyboardInterrupt:
+            role_success, role = Utils.acquire_input('The role name to be deleted > ')
+            if not role_success:
                 continue
 
             try:
@@ -459,21 +452,20 @@ if __name__ == '__main__':
         elif cmd == 'create_role':
             Logger.info('Creating a role, please provide additional information...')
 
-            try:
-                role = input('The role name > ')
-                title = input('The role display title > ')
-                description = input('The role description > ')
-                stage = input('The role stage (Either GA, ALPHA or BETA) > ')
-
-                permissions = []
-                while True:
-                    current_permission = input('Permissions (enter \'q\' to stop entering permissions) > ')
-                    if current_permission == 'q':
-                        break
-
-                    permissions.append(current_permission)
-            except KeyboardInterrupt:
+            name_success, name = Utils.acquire_input('The role name > ')
+            title_success, title = Utils.acquire_input('The role display title > ')
+            description_success, description = Utils.acquire_input('The role description > ')
+            stage_success, stage = Utils.acquire_input('The role stage (Either GA, ALPHA or BETA) > ')
+            if not role_success or not title_success or not description_success or not stage_success:
                 continue
+
+            permissions = []
+            while True:
+                current_permission_success, current_permission = Utils.acquire_input('Permissions (enter \'q\' to stop entering permissions) > ')
+                if current_permission == 'q' or not current_permission_success:
+                    break
+
+                permissions.append(current_permission)
 
             try:
                 last_result = GoogleIAMFunctions.create_role(
@@ -489,21 +481,20 @@ if __name__ == '__main__':
         elif cmd == 'edit_role':
             Logger.info('Editing a role, please provide additional information...')
             
-            try:
-                role = input('The role name > ')
-                title = input('The role display title > ')
-                description = input('The role description > ')
-                stage = input('The role stage (Either GA, ALPHA or BETA)  > ')
-
-                permissions = []
-                while True:
-                    current_permission = input('Permissions (enter \'q\' to stop entering permissions) > ')
-                    if current_permission == 'q':
-                        break
-
-                    permissions.append(current_permission)
-            except KeyboardInterrupt:
+            name_success, name = Utils.acquire_input('The role name > ')
+            title_success, title = Utils.acquire_input('The role display title > ')
+            description_success, description = Utils.acquire_input('The role description > ')
+            stage_success, stage = Utils.acquire_input('The role stage (Either GA, ALPHA or BETA) > ')
+            if not role_success or not title_success or not description_success or not stage_success:
                 continue
+
+            permissions = []
+            while True:
+                current_permission_success, current_permission = Utils.acquire_input('Permissions (enter \'q\' to stop entering permissions) > ')
+                if current_permission == 'q' or not current_permission_success:
+                    break
+
+                permissions.append(current_permission)
 
             try:
                 last_result = GoogleIAMFunctions.edit_role(
@@ -519,9 +510,8 @@ if __name__ == '__main__':
         elif cmd == 'recover_role':
             Logger.info('Recovering a role, please provide additional information...')
 
-            try:
-                role = input('The role to be recovered > ')
-            except KeyboardInterrupt:
+            role_success, role = Utils.acquire_input('The role to be recovered > ')
+            if not role_success:
                 continue
         
             try:
@@ -530,13 +520,16 @@ if __name__ == '__main__':
                 last_error = 'Function GoogleIAMFunctions.recover_role failed.'
         elif cmd == 'list_roles':
             Logger.info('Listing all roles...')
-            last_result = GoogleIAMFunctions.list_roles(project=project)
+
+            try:
+                last_result = GoogleIAMFunctions.list_roles(project=project)
+            except Exception:
+                last_error = f'Could not list all roles from project {project}'
         elif cmd == 'get_role':
             Logger.info('Retrieving a specific role, please provide additional information...')
 
-            try:
-                role = input('The specific role name to be retrieved > ')
-            except KeyboardInterrupt:
+            role_success, role = Utils.acquire_input('The specific role name to be retrieved > ')
+            if not role_success:
                 continue
 
             try:
@@ -546,9 +539,8 @@ if __name__ == '__main__':
         elif cmd == 'query_grantable_roles':
             Logger.info('Retrieving all grantable roles, please provide additional information...')
 
-            try:
-                name = input('The full resource name to query the grantable roles from > ')
-            except KeyboardInterrupt:
+            name_success, name = Utils.acquire_input('The full resource name to query the grantable roles from > ')
+            if not name_success:
                 continue
 
             try:
@@ -558,9 +550,8 @@ if __name__ == '__main__':
         elif cmd == 'set_policy':
             Logger.info('Setting the IAM policy, please provide additional information...')
 
-            try:
-                name = input('The resource name, which is used to get the policy from the resource manager api and then is set to the IAM api > ')
-            except KeyboardInterrupt:
+            name_success, name = Utils.acquire_input('The resource name, which is used to get the policy from the resource manager api and then is set to the IAM api > ')
+            if not name_success:
                 continue
 
             policy = GoogleResourceManagerFunctions.project_get_iam_policy(resource_name=name)
@@ -573,11 +564,10 @@ if __name__ == '__main__':
         elif cmd == 'add_member_to_policy':
             Logger.info('Adding a member to the IAM policy, please provide additional information...')
             
-            try:
-                name = input('The resource name, which is used to get the policy from the resource manager api > ')
-                role = input('The role name to be set > ')
-                member = input('The member to be set > ')
-            except KeyboardInterrupt:
+            name_success, name = Utils.acquire_input('The resource name, which is used to get the policy from the resource manager api > ')
+            role_success, role = Utils.acquire_input('The role name to be set > ')
+            member_success, member = Utils.acquire_input('The member to be set > ')
+            if not name_success or not role_success or not member_success:
                 continue
 
             try:
